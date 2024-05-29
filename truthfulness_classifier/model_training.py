@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logger.info(f"Using device: {device}")
 
-def load_config(config_path='config.yaml'):
+def load_config(config_path=os.path.join(os.path.dirname(__file__), '../config.yaml')):
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     return config

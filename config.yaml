@@ -1,20 +1,18 @@
+data:
+  random_state: 42
+  test_size: 0.2
 model:
   name: "huawei-noah/TinyBERT_General_4L_312D"
-  num_labels: 6
   max_length: 512
-
+  num_labels: 6
+  best_model_dir: ./results/model_20240528_214408   # Update this after finding the best model
+optuna:
+  n_trials: 3
 training:
-  num_epochs: 3
-  batch_size: 16
+  batch_size: 8
   learning_rate: 2e-5
+  logging_dir: ./logs
+  num_epochs: 5
+  output_dir: ./results
   warmup_steps: 500
   weight_decay: 0.01
-  output_dir: "./results"
-  logging_dir: "./logs"
-
-data:
-  test_size: 0.2
-  random_state: 42
-
-optuna:
-  n_trials: 5

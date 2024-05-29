@@ -17,7 +17,6 @@ def load_config(config_path=os.path.join(os.path.dirname(__file__), '../config.y
         config = yaml.safe_load(file)
     return config
 
-
 def load_model(model_dir='./results'):
     if not os.path.exists(model_dir):
         logger.error(f"The directory {model_dir} does not exist.")

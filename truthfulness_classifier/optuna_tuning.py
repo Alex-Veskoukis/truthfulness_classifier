@@ -98,7 +98,8 @@ def objective(trial, data_path, config):
     logger.info(f"Final model saved at {model_save_path}")
 
     eval_result = trainer.evaluate(eval_dataset=test_dataset)
-    return eval_result['eval_loss']
+    return eval_result['eval_loss'], model, tokenizer, label_to_id
+
 
 def main():
     import argparse
