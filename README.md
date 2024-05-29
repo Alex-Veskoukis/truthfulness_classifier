@@ -119,7 +119,6 @@ pythonProject/
 ├── requirements_full.txt
 ├── config.yaml
 ├── logs/
-├── .idea/
 ├── results/
 │   ├── model_20240528_214408/
 │   ├── model_20240529_101923/
