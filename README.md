@@ -57,7 +57,7 @@ To train the model, use the following command:
 train-truthfulness --data <data_path> --config config.yaml
 ```
 
-- \`<data_path>\`: Path to the training data CSV file.
+- \`<data_path>\`: Path to the training data CSV file. (see example/data.csv)
 - \`config.yaml\`: Path to the configuration file.
 
 ### Predicting Truthfulness
@@ -68,8 +68,8 @@ To predict the truthfulness of a statement, use the following command:
 predict-truthfulness --statement_data <statement_data_path> --model_dir <model_directory> --config config.yaml
 ```
 
-- \`<statement_data_path>\`: Path to the JSON file containing the statement data.
-- \`<model_directory>\`: Directory to load the model from.
+- \`<statement_data_path>\`: Path to the JSON file containing the statement data. (see example/statement_data.json)
+- \`<model_directory>\`: Directory to load the model from. (defaults to './results')
 - \`config.yaml\`: Path to the configuration file.
 
 ### Hyperparameter Tuning with Optuna
@@ -80,7 +80,7 @@ To perform hyperparameter tuning using Optuna, use the following command:
 tune-truthfulness --data <data_path> --config config.yaml
 ```
 
-- \`<data_path>\`: Path to the training data CSV file.
+- \`<data_path>\`: Path to the training data CSV file. (see example/data.csv)
 - \`config.yaml\`: Path to the configuration file.
 
 ### Evaluating Models
