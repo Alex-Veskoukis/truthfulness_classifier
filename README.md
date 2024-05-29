@@ -61,7 +61,7 @@ Example:
 train-truthfulness --data tests/examples/data.csv --config config.yaml
 ```
 
-- \`<data_path>\`: Path to the training data CSV file. (see example/data.csv)
+- \`<data_path>\`: Path to the training data CSV file. (see tests/examples/data.csv)
 - \`config.yaml\`: Path to the configuration file.
 
 ### Predicting Truthfulness
@@ -77,7 +77,7 @@ Example:
 predict-truthfulness tests/examples/statement_data.json --model_dir results/model_20240528_214408 --config config.yaml
 ```
 
-- \`<statement_data_path>\`: Path to the JSON file containing the statement data. (see example/statement_data.json)
+- \`<statement_data_path>\`: Path to the JSON file containing the statement data. (see tests/examples/statement_data.json)
 - \`<model_directory>\`: Directory to load the model from. (defaults to './results')
 - \`config.yaml\`: Path to the configuration file.
 
@@ -94,7 +94,7 @@ Example:
 tune-truthfulness tests/examples/data.csv --config config.yaml
 ```
 
-- \`<data_path>\`: Path to the training data CSV file. (see example/data.csv)
+- \`<data_path>\`: Path to the training data CSV file. (see tests/examples/data.csv)
 - \`config.yaml\`: Path to the configuration file.
 
 ### Evaluating Models
