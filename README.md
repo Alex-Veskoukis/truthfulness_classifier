@@ -134,7 +134,6 @@ Place your data file in the tests/examples/ directory for testing purposes or sp
 The config.yaml file should contain the necessary configuration parameters for the model training, such as:
 
 ```yaml
-Copy code
 data:
   random_state: 42
   test_size: 0.2
