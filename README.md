@@ -91,7 +91,7 @@ tune-truthfulness --data <data_path> --config config.yaml
 
 Example:
 ```bash
-tune-truthfulness --data tests/examples/data.csv --config config.yaml
+tune-truthfulness tests/examples/data.csv --config config.yaml
 ```
 
 - \`<data_path>\`: Path to the training data CSV file. (see example/data.csv)
