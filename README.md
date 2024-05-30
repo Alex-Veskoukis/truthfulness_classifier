@@ -10,8 +10,8 @@ This project aims to classify the truthfulness of statements using a multiclass 
   - [Hyperparameter Tuning with Optuna](#hyperparameter-tuning-with-optuna)
   - [Evaluating Models](#evaluating-models)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-
+- [Detailed Instructions](#Detailed Instructions)
+- [Additional Resources](#Additional Resources)
 
 ## Installation
 
@@ -192,7 +192,7 @@ Run the tests using:
 python -m unittest discover tests
 ```
 
-### Additional Resources
+## Additional Resources
 
 The latest model can be downloaded from this [link](https://1drv.ms/u/s!AggiPSUtJpdntgAmQk3maPta9EHm?e=eXr5Bg) and
 should be unpacked in the root directory.
