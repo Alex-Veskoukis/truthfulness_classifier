@@ -53,5 +53,3 @@ logs/
 
 # Ignore the results directory
 results/
-# But do not ignore the specific model folder
-!results/model_20240529_233313/
