@@ -10,8 +10,8 @@ This project aims to classify the truthfulness of statements using a multiclass 
   - [Hyperparameter Tuning with Optuna](#hyperparameter-tuning-with-optuna)
   - [Evaluating Models](#evaluating-models)
 - [Project Structure](#project-structure)
-- [Detailed Instructions](#Detailed Instructions)
-- [Additional Resources](#Additional Resources)
+- [Detailed Instructions](#detailed_instructions)
+- [Additional Resources](#additional-resources)
 
 ## Installation
 
