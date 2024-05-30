@@ -5,7 +5,7 @@ model:
   name: "huawei-noah/TinyBERT_General_4L_312D"
   max_length: 512
   num_labels: 6
-  best_model_dir: ./results/model_20240528_214408   # Update this after finding the best model
+  best_model_dir: ./results/model_20240529_233313   # Update this after finding the best model
 optuna:
   n_trials: 3
 training:

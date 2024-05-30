@@ -11,7 +11,7 @@ This project aims to classify the truthfulness of statements using a multiclass 
   - [Evaluating Models](#evaluating-models)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Installation
 
@@ -74,7 +74,7 @@ predict-truthfulness --statement_data <statement_data_path> --model_dir <model_d
 
 Example:
 ```bash
-predict-truthfulness tests/examples/statement_data.json --model_dir results/model_20240528_214408 --config config.yaml
+predict-truthfulness tests/examples/statement_data.json --model_dir results/model_20240529_233313 --config config.yaml
 ```
 
 - \`<statement_data_path>\`: Path to the JSON file containing the statement data. (see tests/examples/statement_data.json)
@@ -134,8 +134,7 @@ pythonProject/
 ├── config.yaml
 ├── logs/
 ├── results/
-│   ├── model_20240528_214408/
-│   ├── model_20240529_101923/
+│   ├── model_20240529_233313/
 ```
 
 ## Detailed Instructions
@@ -152,7 +151,7 @@ data:
   random_state: 42
   test_size: 0.2
 model:
-  best_model_dir: ./results/model_20240528_214408
+  best_model_dir: ./results/model_20240529_233313
   max_length: 512
   name: huawei-noah/TinyBERT_General_4L_312D
   num_labels: 6
@@ -173,6 +172,16 @@ To improve the preprocessing, the following techniques are employed:
 
 Removing Stop Words: Common words that do not contribute to the model's understanding are removed.
 Lemmatization: Reducing words to their base or root form to ensure consistency in word usage.
+Spacy Model Loading: The Spacy model en_core_web_sm is used for advanced text preprocessing tasks.
+
+### Downloading Necessary NLTK Data
+
+Ensure you have the necessary NLTK data:
+
+```pythonimport nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
+```
 
 ### Running Tests
 Unit tests are provided to ensure the functionality of the data preprocessing, model training, and inference modules.
@@ -182,3 +191,9 @@ Run the tests using:
 ```bash
 python -m unittest discover tests
 ```
+
+### Additional Resources
+
+The latest model can be downloaded from this link and should be unpacked in the root directory.
+
+The presentation can be found here.
