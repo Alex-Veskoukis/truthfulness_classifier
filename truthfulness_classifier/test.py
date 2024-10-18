@@ -1,4 +1,4 @@
-test_path = "E:/satalia_results/test_file.txt"
+test_path = "E:/results/test_file.txt"
 with open(test_path, 'w') as f:
     f.write("This is a test.")
 

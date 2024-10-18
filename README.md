@@ -27,8 +27,8 @@ cd truthfulness_classifier
 Create and activate a conda environment for the project.
 
 ```bash
-conda create -n Satalia_truthfulness_classifier python=3.9
-conda activate Satalia_truthfulness_classifier
+conda create -n truthfulness_classifier python=3.9
+conda activate truthfulness_classifier
 ```
 
 ### Step 3: Install Dependencies

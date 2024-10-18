@@ -53,3 +53,4 @@ logs/
 
 # Ignore the results directory
 results/
+requirements_full.txt
