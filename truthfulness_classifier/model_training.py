@@ -11,6 +11,7 @@ from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 from truthfulness_classifier.data_preprocessing import preprocess_single_statement, preprocess_data
 from truthfulness_classifier.data_collator import CustomDataCollator
+from truthfulness_classifier.utils import get_class_weights, load_config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -18,15 +19,6 @@ logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logger.info(f"Using device: {device}")
-
-def load_config(config_path=os.path.join(os.path.dirname(__file__), '../config.yaml')):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
-
-def get_class_weights(labels, num_classes):
-    class_weights = compute_class_weight(class_weight='balanced', classes=np.arange(num_classes), y=labels)
-    return torch.tensor(class_weights, dtype=torch.float).to(device)
 
 class CustomTrainer(Trainer):
     def __init__(self, *args, class_weights=None, **kwargs):
@@ -41,6 +33,7 @@ class CustomTrainer(Trainer):
         loss = loss_fct(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
+
 class TruthfulnessClassifier:
     def __init__(self, config):
         self.config = config
@@ -49,7 +42,8 @@ class TruthfulnessClassifier:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         self.output_dir = os.path.join(config['training']['output_dir'], f"model_{timestamp}")
         os.makedirs(self.output_dir, exist_ok=True)
-        self.model = BertForSequenceClassification.from_pretrained(self.model_name, num_labels=self.num_labels).to(device)
+        self.model = BertForSequenceClassification.from_pretrained(self.model_name, num_labels=self.num_labels).to(
+            device)
         self.tokenizer = BertTokenizer.from_pretrained(self.model_name)
         self.label_to_id = None
 
@@ -137,8 +131,10 @@ class TruthfulnessClassifier:
         prediction_label = id_to_label[prediction]
         confidence = torch.softmax(outputs.logits, dim=1).max().cpu().numpy()
 
-        explanation = f"The statement is predicted as {prediction_label} with a confidence score of {confidence:.2f}. This is based on the content and context provided."
+        explanation = (f"The statement is predicted as {prediction_label} with a confidence score of {confidence:.2f}. "
+                       f"This is based on the content and context provided.")
         return prediction_label, explanation
+
 
 def main():
     import argparse
@@ -159,6 +155,7 @@ def main():
     train_encodings, test_encodings, y_train, y_test, tokenizer, label_to_id = preprocess_data(args.data, config)
     classifier = TruthfulnessClassifier(config)
     classifier.train(train_encodings, y_train, test_encodings, y_test, label_to_id)
+
 
 if __name__ == "__main__":
     main()

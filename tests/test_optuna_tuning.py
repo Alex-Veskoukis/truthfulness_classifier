@@ -5,6 +5,7 @@ import optuna
 from optuna.trial import TrialState
 from truthfulness_classifier.optuna_tuning import objective, load_config
 
+
 class TestOptunaTuning(unittest.TestCase):
 
     @classmethod

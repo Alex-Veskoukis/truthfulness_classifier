@@ -1,9 +1,8 @@
+import json
 import unittest
 import os
-import yaml
 from truthfulness_classifier.model_training import TruthfulnessClassifier, load_config
 from truthfulness_classifier.data_preprocessing import preprocess_data
-import torch
 
 
 class TestModelTraining(unittest.TestCase):

@@ -3,6 +3,7 @@ import os
 import json
 from truthfulness_classifier.inference import predict_truthfulness, load_model, load_config
 
+
 class TestInference(unittest.TestCase):
 
     @classmethod
@@ -20,7 +21,9 @@ class TestInference(unittest.TestCase):
     def test_predict_truthfulness(self):
         with open(self.statement_data_path, 'r') as f:
             statement_data = json.load(f)
-        prediction, explanation = predict_truthfulness(statement_data, model_dir=self.model_dir, config_path=self.config_path)
+        prediction, explanation = predict_truthfulness(statement_data,
+                                                       model_dir=self.model_dir,
+                                                       config_path=self.config_path)
         self.assertIn(prediction, ['true', 'false', 'half-true', 'barely-true'])
         self.assertIsInstance(explanation, str)
 

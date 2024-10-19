@@ -57,7 +57,7 @@ def preprocess_data(data_path, config):
         axis=1
     )
 
-    logger.info("Applying advanced text preprocessing")
+    logger.info("Applying text preprocessing")
     data['processed_text'] = data['combined_text'].apply(preprocess_text)
 
     X = data['processed_text'].tolist()
@@ -104,7 +104,8 @@ def preprocess_single_statement(statement_data, tokenizer, max_length):
     Preprocess a single statement for prediction with a TinyBERT model.
     """
     statement_data = {key: (value if value is not None else '') for key, value in statement_data.items()}
-    combined_text = f"{statement_data['statement']} {statement_data['subjects']} {statement_data['speaker_name']} {statement_data['speaker_job']} {statement_data['statement_context']}"
+    combined_text = (f"{statement_data['statement']} {statement_data['subjects']} {statement_data['speaker_name']}"
+                     f" {statement_data['speaker_job']} {statement_data['statement_context']}")
 
     combined_text = preprocess_text(combined_text)
 

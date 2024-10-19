@@ -1,11 +1,10 @@
 import os
 import torch
 import joblib
-import pandas as pd
-import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from transformers import BertTokenizer, BertForSequenceClassification
-from truthfulness_classifier.data_preprocessing import preprocess_data, load_config
+from truthfulness_classifier.data_preprocessing import preprocess_data
+from truthfulness_classifier.utils import load_config
 
 # Configure logging
 import logging

@@ -1,9 +1,10 @@
 import unittest
-import os
 import pandas as pd
 from transformers import BertTokenizer
-from truthfulness_classifier.data_preprocessing import preprocess_data, preprocess_single_statement, load_config
+from truthfulness_classifier.data_preprocessing import preprocess_data, preprocess_single_statement
 import json
+
+from truthfulness_classifier.inference import load_config
 
 
 class TestDataPreprocessing(unittest.TestCase):

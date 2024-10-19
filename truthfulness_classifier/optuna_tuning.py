@@ -1,17 +1,17 @@
-import optuna
-from optuna.trial import TrialState
-import torch
-from transformers import TrainingArguments, Trainer, BertForSequenceClassification
-from torch.utils.data import TensorDataset
-from truthfulness_classifier.data_preprocessing import preprocess_data
-from truthfulness_classifier.data_collator import CustomDataCollator
+import datetime
 import logging
 import os
-import datetime
-import yaml
-from sklearn.utils.class_weight import compute_class_weight
-import numpy as np
+
 import joblib
+import optuna
+import torch
+from optuna.trial import TrialState
+from torch.utils.data import TensorDataset
+from transformers import TrainingArguments, Trainer, BertForSequenceClassification
+
+from truthfulness_classifier.data_collator import CustomDataCollator
+from truthfulness_classifier.data_preprocessing import preprocess_data
+from truthfulness_classifier.utils import get_class_weights, load_config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,15 +19,6 @@ logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def load_config(config_path=os.path.join(os.path.dirname(__file__), '../config.yaml')):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
-
-
-def get_class_weights(labels, num_classes):
-    class_weights = compute_class_weight(class_weight='balanced', classes=np.arange(num_classes), y=labels)
-    return torch.tensor(class_weights, dtype=torch.float).to(device)
 
 class CustomTrainer(Trainer):
     def __init__(self, *args, class_weights=None, **kwargs):
@@ -42,6 +33,7 @@ class CustomTrainer(Trainer):
         loss = loss_fct(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
+
 def objective(trial, data_path, config):
     # Hyperparameters to optimize
     learning_rate = trial.suggest_float('learning_rate', 1e-5, 5e-5)
@@ -50,7 +42,8 @@ def objective(trial, data_path, config):
     # Data preprocessing
     train_encodings, test_encodings, y_train, y_test, tokenizer, label_to_id = preprocess_data(data_path, config)
 
-    model = BertForSequenceClassification.from_pretrained(config['model']['name'], num_labels=len(label_to_id)).to(device)
+    model = BertForSequenceClassification.from_pretrained(config['model']['name'], num_labels=len(label_to_id)).to(
+        device)
     train_dataset = TensorDataset(train_encodings['input_ids'], train_encodings['attention_mask'], y_train)
     test_dataset = TensorDataset(test_encodings['input_ids'], test_encodings['attention_mask'], y_test)
 
@@ -143,6 +136,7 @@ def main():
     joblib.dump(best_label_to_id, os.path.join(best_model_dir, 'label_to_id.pkl'))
 
     logger.info(f"Best model saved to {best_model_dir}")
+
 
 if __name__ == "__main__":
     main()

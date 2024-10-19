@@ -1,8 +1,9 @@
 import torch
 from transformers import DefaultDataCollator
 
+
 class CustomDataCollator(DefaultDataCollator):
-    def __call__(self, features):
+    def __call__(self, features, **kwargs):
         if isinstance(features[0], dict):
             batch = {key: torch.stack([f[key] for f in features]) for key in features[0]}
         else:
@@ -13,6 +14,3 @@ class CustomDataCollator(DefaultDataCollator):
                 "labels": torch.stack([f[2] for f in features])
             }
         return batch
-
-
-
