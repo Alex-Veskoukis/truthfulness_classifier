@@ -117,7 +117,6 @@ def preprocess_data(
     # Reshape X to 2D array for RandomOverSampler
     X = np.array(X).reshape(-1, 1)
     X_resampled, labels_resampled = ros.fit_resample(X, labels)
-    # Flatten X_resampled back to 1D list
     X_resampled = X_resampled.flatten()
 
     logger.info(f"Resampled class distribution: {Counter(labels_resampled)}")

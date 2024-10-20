@@ -7,17 +7,17 @@ import optuna
 import torch
 from optuna.trial import TrialState
 from torch.utils.data import TensorDataset
-from transformers import TrainingArguments, Trainer, BertForSequenceClassification, DataCollatorWithPadding
+from transformers import TrainingArguments, BertForSequenceClassification, DataCollatorWithPadding
 
 from truthfulness_classifier.data_preprocessing import preprocess_data
 from truthfulness_classifier.utils import get_class_weights, load_config
 from truthfulness_classifier.model_training import CustomTrainer
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def objective(trial, data_path, config):
     # Hyperparameters to optimize
@@ -50,7 +50,7 @@ def objective(trial, data_path, config):
         warmup_steps=config['training']['warmup_steps'],
         weight_decay=config['training']['weight_decay'],
         logging_dir=f'{output_dir}/logs',
-        logging_steps=10,
+        logging_steps=50,
         evaluation_strategy="epoch",
         save_steps=500,
         save_total_limit=3,
@@ -126,4 +126,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if not logger.handlers:
+        logging.basicConfig(level=logging.INFO)
     main()

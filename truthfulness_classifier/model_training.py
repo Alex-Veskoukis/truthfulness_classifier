@@ -204,5 +204,6 @@ def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    if not logger.handlers:
+        logging.basicConfig(level=logging.INFO)
     main()
