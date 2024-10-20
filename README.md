@@ -11,7 +11,6 @@ This project aims to classify the truthfulness of statements using a multiclass 
   - [Evaluating Models](#evaluating-models)
 - [Project Structure](#project-structure)
 - [Detailed Instructions](#detailed_instructions)
-- [Additional Resources](#additional-resources)
 
 ## Installation
 
