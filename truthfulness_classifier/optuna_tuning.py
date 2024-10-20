@@ -7,32 +7,17 @@ import optuna
 import torch
 from optuna.trial import TrialState
 from torch.utils.data import TensorDataset
-from transformers import TrainingArguments, Trainer, BertForSequenceClassification
+from transformers import TrainingArguments, Trainer, BertForSequenceClassification, DataCollatorWithPadding
 
-from truthfulness_classifier.data_collator import CustomDataCollator
 from truthfulness_classifier.data_preprocessing import preprocess_data
 from truthfulness_classifier.utils import get_class_weights, load_config
+from truthfulness_classifier.model_training import CustomTrainer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-
-class CustomTrainer(Trainer):
-    def __init__(self, *args, class_weights=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.class_weights = class_weights
-
-    def compute_loss(self, model, inputs, return_outputs=False):
-        labels = inputs.pop("labels")
-        outputs = model(**inputs)
-        logits = outputs.logits
-        loss_fct = torch.nn.CrossEntropyLoss(weight=self.class_weights)
-        loss = loss_fct(logits, labels)
-        return (loss, outputs) if return_outputs else loss
-
 
 def objective(trial, data_path, config):
     # Hyperparameters to optimize
@@ -53,6 +38,8 @@ def objective(trial, data_path, config):
     output_dir = f'./results/optuna_trial_{trial_number}_{timestamp}'
 
     class_weights = get_class_weights(y_train.cpu().numpy(), len(label_to_id))
+    # Use DataCollatorWithPadding for dynamic padding
+    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     training_args = TrainingArguments(
         output_dir=output_dir,
@@ -75,7 +62,7 @@ def objective(trial, data_path, config):
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=test_dataset,
-        data_collator=CustomDataCollator(),
+        data_collator=data_collator,
         class_weights=class_weights,
     )
 

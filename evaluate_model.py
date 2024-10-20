@@ -1,58 +1,81 @@
-import os
 import torch
-import joblib
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-from transformers import BertTokenizer, BertForSequenceClassification
-from truthfulness_classifier.data_preprocessing import preprocess_data
-from truthfulness_classifier.utils import load_config
-
-# Configure logging
+from truthfulness_classifier.data_preprocessing import preprocess_test_data
+from truthfulness_classifier.utils import load_config, load_model
+from truthfulness_classifier.utils import CustomDataset  # Assuming this module exists
+from typing import Tuple, Dict, Any
 import logging
+import warnings
 
-logging.basicConfig(level=logging.INFO)
+# Suppress specific warnings if necessary
+warnings.filterwarnings(
+    "ignore",
+    message=r".*Some weights of.*were not initialized.*",
+    category=UserWarning,
+    module="transformers.modeling_utils"
+)
+
 logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def load_model(model_dir):
-    if not os.path.exists(model_dir):
-        logger.error(f"The directory {model_dir} does not exist.")
-        raise FileNotFoundError(f"The directory {model_dir} does not exist.")
+def evaluate(
+        model: torch.nn.Module,
+        tokenizer,
+        label_to_id: Dict[str, int],
+        data_path: str,
+        config: Dict[str, Any]
+) -> Tuple[float, float, float, float]:
+    """
+    Evaluate the model on the test data.
 
-    logger.info(f"Loading model from {model_dir}")
-    model = BertForSequenceClassification.from_pretrained(model_dir).to(device)
-    tokenizer = BertTokenizer.from_pretrained(model_dir)
-    label_to_id = joblib.load(os.path.join(model_dir, 'label_to_id.pkl'))
-    return model, tokenizer, label_to_id
+    Args:
+        model (torch.nn.Module): The trained model to evaluate.
+        tokenizer: The tokenizer used for preprocessing.
+        label_to_id (Dict[str, int]): Mapping from labels to IDs.
+        data_path (str): Path to the test data CSV file.
+        config (Dict[str, Any]): Configuration dictionary.
 
-
-def evaluate(model, tokenizer, label_to_id, data_path, config):
+    Returns:
+        Tuple[float, float, float, float]: Accuracy, precision, recall, and F1 score.
+    """
     logger.info(f"Evaluating model on {data_path}")
 
-    # Preprocess data
-    _, test_encodings, _, y_test, _, _ = preprocess_data(data_path, config)
+    # Preprocess test data
+    test_encodings, y_test = preprocess_test_data(data_path, tokenizer, label_to_id, config)
 
-    # Convert test encodings to DataLoader
-    test_dataset = torch.utils.data.TensorDataset(test_encodings['input_ids'], test_encodings['attention_mask'], y_test)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=config['training']['batch_size'])
+    # Create the test dataset
+    test_dataset = CustomDataset(test_encodings, y_test)
+    test_loader = torch.utils.data.DataLoader(
+        test_dataset,
+        batch_size=config['training']['batch_size'],
+        shuffle=False
+    )
 
+    model.to(device)
     model.eval()
     all_preds = []
     all_labels = []
 
     with torch.no_grad():
         for batch in test_loader:
-            input_ids, attention_mask, labels = tuple(t.to(device) for t in batch)
-            outputs = model(input_ids, attention_mask=attention_mask)
+            # Move tensors to the correct device
+            batch = {k: v.to(device) for k, v in batch.items()}
+            outputs = model(
+                input_ids=batch['input_ids'],
+                attention_mask=batch['attention_mask']
+            )
             logits = outputs.logits
             preds = torch.argmax(logits, dim=1).cpu().numpy()
             all_preds.extend(preds)
-            all_labels.extend(labels.cpu().numpy())
+            all_labels.extend(batch['labels'].cpu().numpy())
 
     # Calculate metrics
     accuracy = accuracy_score(all_labels, all_preds)
-    precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_preds, average='weighted')
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        all_labels, all_preds, average='weighted', zero_division=0
+    )
 
     logger.info(f"Accuracy: {accuracy:.4f}")
     logger.info(f"Precision: {precision:.4f}")
@@ -63,6 +86,8 @@ def evaluate(model, tokenizer, label_to_id, data_path, config):
 
 
 if __name__ == "__main__":
+    if not logger.handlers:
+        logging.basicConfig(level=logging.INFO)
     import argparse
 
     parser = argparse.ArgumentParser(description="Evaluate the Truthfulness Classifier")
@@ -72,7 +97,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+
     config = load_config(args.config)
 
-    model, tokenizer, label_to_id = load_model(args.model_dir)
+    try:
+        model, tokenizer, label_to_id = load_model(args.model_dir)
+    except Exception as e:
+        logger.error(f"Failed to load model from {args.model_dir}: {e}")
+        exit(1)
+
     evaluate(model, tokenizer, label_to_id, args.data, config)
