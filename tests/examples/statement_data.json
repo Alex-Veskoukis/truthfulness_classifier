@@ -1,1 +1,37 @@
-{"statement": "In 2010, a spokesman for Republican Gov. Mitch Daniels of Indiana said, \"When Mr. Daniels became governor in January 2005, the state was running a deficit of $200 million. In less than one year, the Daniels administration has erased the deficit.\"", "subjects": "state-budget", "speaker_name": "Democratic National Committee", "speaker_job": "", "statement_context": "In a news release"}
+[
+  {
+    "statement": "In 2021, a spokesperson for Governor John Smith said, \"Under his leadership, the state's deficit was reduced by $150 million in just two years.\"",
+    "subjects": "state-budget",
+    "speaker_name": "State Budget Office",
+    "speaker_job": "Spokesperson",
+    "statement_context": "In a press briefing"
+  },
+  {
+    "statement": "The state achieved its highest employment rate in 2020, according to the Department of Labor.",
+    "subjects": "employment",
+    "speaker_name": "Department of Labor",
+    "speaker_job": "",
+    "statement_context": "In a public report"
+  },
+  {
+    "statement": "Governor Jane Doe's administration increased education funding by 10% in 2022, prioritizing rural schools.",
+    "subjects": "education$state-budget",
+    "speaker_name": "Governor's Office",
+    "speaker_job": "",
+    "statement_context": "In a press release"
+  },
+  {
+    "statement": "The state's infrastructure spending grew by $1 billion in 2021, focusing on roads and bridges.",
+    "subjects": "infrastructure",
+    "speaker_name": "Infrastructure Council",
+    "speaker_job": "Executive Director",
+    "statement_context": "In an official statement"
+  },
+  {
+    "statement": "In 2022, state officials announced a significant decrease in violent crime rates, particularly in urban areas.",
+    "subjects": "crime",
+    "speaker_name": "State Police Department",
+    "speaker_job": "Commissioner",
+    "statement_context": "At a crime statistics briefing"
+  }
+]
