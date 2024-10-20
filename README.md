@@ -130,7 +130,6 @@ pythonProject/
 ├── README.md
 ├── setup.py
 ├── requirements.txt
-├── requirements_full.txt
 ├── config.yaml
 ├── logs/
 ├── results/
@@ -191,8 +190,3 @@ Run the tests using:
 python -m unittest discover tests
 ```
 
-## Additional Resources
-The latest model can be downloaded from this [link](https://1drv.ms/u/s!AggiPSUtJpdntgAmQk3maPta9EHm?e=eXr5Bg) and
-should be unpacked in the root directory.
-
-The presentation can be found [here](https://1drv.ms/p/s!AggiPSUtJpdntgFMAzHmQg5Fz_Ze?e=APxmot).
