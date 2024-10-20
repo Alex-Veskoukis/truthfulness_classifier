@@ -1,7 +1,6 @@
 import unittest
-import os
 import json
-from truthfulness_classifier.inference import predict_truthfulness, load_model, load_config
+from truthfulness_classifier.inference import predict_truthfulness, load_model
 
 
 class TestInference(unittest.TestCase):

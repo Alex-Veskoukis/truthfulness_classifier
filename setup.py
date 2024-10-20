@@ -10,7 +10,12 @@ setup(
         'transformers',
         'torch',
         'joblib',
-        'optuna'
+        'optuna',
+        'imblearn',
+        'nltk',
+        'numpy',
+        'spacy'
+
     ],
     entry_points={
         'console_scripts': [

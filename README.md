@@ -74,7 +74,7 @@ predict-truthfulness --statement_data <statement_data_path> --model_dir <model_d
 
 Example:
 ```bash
-predict-truthfulness tests/examples/statement_data.json --model_dir results/model_20240529_233313 --config config.yaml
+predict-truthfulness --statement_data tests/examples/statement_data.json --model_dir results/model_20240529_233313 --config config.yaml
 ```
 
 - \`<statement_data_path>\`: Path to the JSON file containing the statement data. (see tests/examples/statement_data.json)
@@ -91,7 +91,7 @@ tune-truthfulness --data <data_path> --config config.yaml
 
 Example:
 ```bash
-tune-truthfulness tests/examples/data.csv --config config.yaml
+tune-truthfulness --data tests/examples/data.csv --config config.yaml
 ```
 
 - \`<data_path>\`: Path to the training data CSV file. (see tests/examples/data.csv)
