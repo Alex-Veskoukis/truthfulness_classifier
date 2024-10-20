@@ -48,11 +48,8 @@ def predict_truthfulness(statement_data, model_dir='./results', config_path='con
 
 
 def main():
-    if not logger.handlers:
-        logging.basicConfig(level=logging.INFO)
-
     parser = argparse.ArgumentParser(description="Predict the truthfulness of a statement")
-    parser.add_argument('statement_data_path',
+    parser.add_argument('--statement_data_path',
                         type=str,
                         help='Path to the JSON file containing the statement data')
     parser.add_argument('--model_dir',
@@ -69,10 +66,13 @@ def main():
     with open(args.statement_data_path, 'r') as f:
         statement_data = json.load(f)
 
-    prediction, explanation = predict_truthfulness(statement_data, model_dir=args.model_dir, config_path=args.config)
+    prediction, explanation = predict_truthfulness(statement_data=statement_data, model_dir=args.model_dir,
+                                                   config_path=args.config)
     print(f"Predicted label: {prediction}")
     print(explanation)
 
 
 if __name__ == "__main__":
+    if not logger.handlers:
+        logging.basicConfig(level=logging.INFO)
     main()
