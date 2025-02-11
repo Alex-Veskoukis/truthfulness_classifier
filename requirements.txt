@@ -1,12 +1,12 @@
 en-core-web-sm==3.7.1
 imblearn==0.0
 joblib==1.4.0
-nltk==3.8.1
+nltk==3.9
 numpy==1.26.4
 optuna==3.6.1
 pandas==2.2.1
 PyYAML==6.0.1
-scikit-learn==1.4.2
+scikit-learn==1.5.0
 spacy==3.7.4
 torch==2.3.0+cu121
 torchaudio==2.3.0+cu121
