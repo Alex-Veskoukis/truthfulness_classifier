@@ -11,5 +11,5 @@ spacy==3.7.4
 torch==2.3.0+cu121
 torchaudio==2.3.0+cu121
 torchvision==0.18.0+cu121
-transformers==4.45.2
+transformers==4.48.0
 imbalanced-learn==0.12.3
